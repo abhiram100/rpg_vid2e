@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 
 def render(x, y, t, p, shape):
+    print(min(x), max(x), min(y), max(y))
     img = np.full(shape=shape + [3], fill_value=255, dtype="uint8")
     img[y, x, :] = 0
     img[y, x, p] = 255

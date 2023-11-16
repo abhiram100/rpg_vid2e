@@ -8,7 +8,7 @@ from tqdm import tqdm
 from . import Sequence
 from .const import imgs_dirname
 from .interpolator import Interpolator
-from .utils import get_sequence_or_none
+from .utils import dsec_get_sequence_or_none
 
 
 class Upsampler:
@@ -28,7 +28,7 @@ class Upsampler:
     def upsample(self):
         sequence_counter = 0
         for src_absdirpath, dirnames, filenames in os.walk(self.src_dir):
-            sequence = get_sequence_or_none(src_absdirpath)
+            sequence = dsec_get_sequence_or_none(src_absdirpath)
             if sequence is None:
                 continue
             sequence_counter += 1
@@ -60,6 +60,8 @@ class Upsampler:
             for frame in total_frames:
                 self._write_img(frame, idx, dest_imgs_dir)
                 idx += 1
+            self._write_timestamps(timestamps_list, dest_timestamps_filepath)
+            
 
         timestamps_list.append(t1)
         self._write_img(I1[0, ...], idx, dest_imgs_dir)

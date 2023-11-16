@@ -15,7 +15,7 @@ def get_fps_file(dirpath: str) -> Union[None, str]:
     return None
 
 def get_imgs_directory(dirpath: str) -> Union[None, str]:
-    imgs_dir = os.path.join(dirpath, imgs_dirname)
+    imgs_dir = os.path.join(dirpath)
     if os.path.isdir(imgs_dir):
         return imgs_dir
     return None
@@ -51,5 +51,10 @@ def get_sequence_or_none(dirpath: str) -> Union[None, Sequence]:
     if video_file is not None:
         return VideoSequence(video_file)
     return None
+
+def dsec_get_sequence_or_none(dirpath: str) -> Union[None, Sequence]:
+    fps = 20    # DSEC is at 20 FPS
+    imgs_dir = get_imgs_directory(dirpath)
+    return ImageSequence(imgs_dir, fps)
 
 

@@ -10,8 +10,9 @@ import torch
 
 
 def is_valid_dir(subdirs, files):
-    return len(subdirs) == 1 and len(files) == 1 and "timestamps.txt" in files and "imgs" in subdirs
+    # return len(subdirs) == 1 and len(files) == 1 and "timestamps.txt" in files and "imgs" in subdirs
     # return len(subdirs) == 1 and len(files) == 1 and "imgs" in subdirs
+    return True
 
 
 
@@ -24,18 +25,16 @@ def process_dir(outdir, indir, args):
                            args.contrast_threshold_positive,
                            args.refractory_period_ns)
 
-    timestamps = np.genfromtxt(os.path.join(indir, "timestamps.txt"), dtype="float64")
+    # timestamps = np.genfromtxt(os.path.join(indir, "timestamps.txt"), dtype="float64")
     
-    # downsample = 1
-    # fps = 539.3508359937957/downsample
-    # timestamps = np.arange(0,(162//downsample)/fps, 1/fps)
+
+    image_files = sorted(glob.glob(os.path.join(indir, "*.png")))
+    
+    fps = 20
+    timestamps = np.arange(0,len(image_files)/fps, 1/fps)
     
     timestamps_ns = (timestamps * 1e9).astype("int64")
     timestamps_ns = torch.from_numpy(timestamps_ns).cuda()
-
-    image_files = sorted(glob.glob(os.path.join(indir, "imgs", "*.png")))
-    # print(timestamps)
-    # image_files = image_files[::downsample]
     
     pbar = tqdm.tqdm(total=len(image_files)-1)
     num_events = 0
